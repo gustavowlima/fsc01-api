@@ -1,7 +1,7 @@
 import Router from '@koa/router'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import jwt, { JsonWebTokenError } from 'jsonwebtoken'
 
 export const router = new Router()
 
@@ -17,12 +17,19 @@ router.get('/tweets', async ctx => {
 
     try {
         jwt.verify(token, process.env.JWT_SECRET)
-        const tweets = await prisma.tweet.findMany()
+        const tweets = await prisma.tweet.findMany({
+            include: {
+                user: true
+            }
+        })
         ctx.body = tweets
 
     } catch (error) {
-        ctx.status = 401
-        return
+        if (typeof error === 'JsonWebTokenError') {
+            ctx.status = 401
+            return
+        }
+        ctx.status = 500
     }
 
 })
@@ -44,13 +51,13 @@ router.post('/tweets', async ctx => {
                 text: ctx.request.body.text
             }
         })
-
+        ctx.body = tweet
     } catch (error) {
         ctx.status = 401
         return
     }
 
-    ctx.body = tweet
+
 
 })
 
