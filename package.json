@@ -1,14 +1,14 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "type": "module",
   "license": "MIT",
   "author": {
     "name": "Gustavo Wellington"
   },
   "scripts": {
-    "dev": "node server.js"
+    "dev": "node api/index.js"
   },
   "dependencies": {
     "@koa/cors": "^3.3.0",

@@ -1,7 +1,7 @@
 import Router from '@koa/router'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcrypt'
-import jwt, { JsonWebTokenError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 export const router = new Router()
 
